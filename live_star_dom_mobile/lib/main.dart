@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:live_star_dom_mobile/screens/home/home_screen.dart';
+import 'package:live_star_dom_mobile/app/root_shell.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: const HomeScreen(),
+      home: const RootShell(),
     );
   }
 }

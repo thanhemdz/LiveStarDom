@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:live_star_dom_mobile/components/bottom_nav_with_animated_icons.dart';
 import 'package:live_star_dom_mobile/screens/notifications/notifications_screen.dart';
+import 'package:live_star_dom_mobile/components/search_bar.dart';
+import 'package:live_star_dom_mobile/components/live_avatar.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -9,8 +10,6 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBody: true,
-      bottomNavigationBar: const BottomNavWithAnimatedIcons(),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -93,6 +92,52 @@ class HomeScreen extends StatelessWidget {
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
                   ),
+                ),
+                const SizedBox(height: 12),
+                const LiveSearchBar(),
+                const SizedBox(height: 16),
+                const Text(
+                  'Live',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                LiveList(
+                  items: [
+                    LiveItem(
+                      image: const NetworkImage(
+                        'https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=200',
+                      ),
+                      isLive: true,
+                    ),
+                    const LiveItem(
+                      image: NetworkImage(
+                        'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200',
+                      ),
+                      isLive: true,
+                    ),
+                    const LiveItem(
+                      image: NetworkImage(
+                        'https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?w=200',
+                      ),
+                    ),
+                    const LiveItem(
+                      image: NetworkImage(
+                        'https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?w=200',
+                      ),
+                    ),
+                    const LiveItem(
+                      image: NetworkImage(
+                        'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200',
+                      ),
+                      isLive: true,
+                    ),
+                  ],
+                  itemSize: 64,
+                  spacing: 18,
                 ),
               ],
             ),

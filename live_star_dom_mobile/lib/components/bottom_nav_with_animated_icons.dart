@@ -3,17 +3,14 @@ import 'package:live_star_dom_mobile/models/nav_item_model.dart';
 
 const Color bottomNavColor = Colors.black;
 
-class BottomNavWithAnimatedIcons extends StatefulWidget {
-  const BottomNavWithAnimatedIcons({super.key});
-
-  @override
-  State<BottomNavWithAnimatedIcons> createState() =>
-      _BottomNavWithAnimatedIconsState();
-}
-
-class _BottomNavWithAnimatedIconsState
-    extends State<BottomNavWithAnimatedIcons> {
-  int _selectedIndex = 0;
+class BottomNavWithAnimatedIcons extends StatelessWidget {
+  final int currentIndex;
+  final ValueChanged<int> onTap;
+  const BottomNavWithAnimatedIcons({
+    super.key,
+    required this.currentIndex,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,31 +33,24 @@ class _BottomNavWithAnimatedIconsState
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: List.generate(
-            bottomNavItems.length,
-            (index) {
-              final isSelected = index == _selectedIndex;
-              return GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  setState(() {
-                    _selectedIndex = index;
-                  });
-                },
-                child: SizedBox(
-                  width: 52,
-                  height: 32,
-                  child: Center(
-                    child: Icon(
-                      bottomNavItems[index].icon,
-                      size: 26,
-                      color: isSelected ? Colors.white : Colors.white54,
-                    ),
+          children: List.generate(bottomNavItems.length, (index) {
+            final isSelected = index == currentIndex;
+            return GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () => onTap(index),
+              child: SizedBox(
+                width: 52,
+                height: 32,
+                child: Center(
+                  child: Icon(
+                    bottomNavItems[index].icon,
+                    size: 26,
+                    color: isSelected ? Colors.white : Colors.white54,
                   ),
                 ),
-              );
-            }
-          ),
+              ),
+            );
+          }),
         ),
       ),
     );
