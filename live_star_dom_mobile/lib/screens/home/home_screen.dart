@@ -4,9 +4,24 @@ import 'package:live_star_dom_mobile/screens/notifications/notifications_screen.
 import 'package:live_star_dom_mobile/components/search_bar.dart';
 import 'package:live_star_dom_mobile/components/live_avatar.dart';
 import 'package:live_star_dom_mobile/components/home_carousel.dart';
+import 'package:live_star_dom_mobile/components/game_card.dart';
+import 'package:live_star_dom_mobile/components/live_event_card.dart';
+import 'package:live_star_dom_mobile/components/featured_streamer.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final _refreshKey = GlobalKey<RefreshIndicatorState>();
+
+  Future<void> _onRefresh() async {
+    await Future.delayed(const Duration(milliseconds: 800));
+    if (mounted) setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +38,15 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
         child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(24, 8, 24, 0),
-            child: Column(
+          child: RefreshIndicator(
+            key: _refreshKey,
+            onRefresh: _onRefresh,
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.fromLTRB(24, 8, 24, 100),
+              physics: const AlwaysScrollableScrollPhysics(
+                parent: BouncingScrollPhysics(),
+              ),
+              child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
@@ -40,19 +61,15 @@ class HomeScreen extends StatelessWidget {
                         letterSpacing: 0.5,
                       ),
                     ),
-                    InkWell(
-                      borderRadius: BorderRadius.circular(12),
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => const NotificationsScreen(),
-                          ),
-                        );
-                      },
-                      child: Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          Container(
+                    Row(
+                      children: [
+                        InkWell(
+                          borderRadius: BorderRadius.circular(12),
+                          onTap: () async {
+                            _refreshKey.currentState?.show();
+                            await _onRefresh();
+                          },
+                          child: Container(
                             width: 40,
                             height: 40,
                             decoration: BoxDecoration(
@@ -62,26 +79,58 @@ class HomeScreen extends StatelessWidget {
                             ),
                             child: const Center(
                               child: Icon(
-                                Iconsax.notification,
+                                Icons.refresh_rounded,
                                 size: 22,
                                 color: Colors.white,
                               ),
                             ),
                           ),
-                          Positioned(
-                            right: 4,
-                            top: 4,
-                            child: Container(
-                              width: 8,
-                              height: 8,
-                              decoration: const BoxDecoration(
-                                color: Colors.redAccent,
-                                shape: BoxShape.circle,
+                        ),
+                        const SizedBox(width: 8),
+                        InkWell(
+                          borderRadius: BorderRadius.circular(12),
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => const NotificationsScreen(),
                               ),
-                            ),
+                            );
+                          },
+                          child: Stack(
+                            clipBehavior: Clip.none,
+                            children: [
+                              Container(
+                                width: 40,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.06),
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(color: Colors.white24),
+                                ),
+                                child: const Center(
+                                  child: Icon(
+                                    Iconsax.notification,
+                                    size: 22,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                right: 4,
+                                top: 4,
+                                child: Container(
+                                  width: 8,
+                                  height: 8,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.redAccent,
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -159,8 +208,96 @@ class HomeScreen extends StatelessWidget {
                   ],
                   height: 240,
                 ),
+                const SizedBox(height: 20),
+                const Text(
+                  'Trending Now',
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                GameRow(
+                  items: const [
+                    GameItem(
+                      title: 'Valorant',
+                      image: NetworkImage('https://picsum.photos/id/1039/400/300'),
+                      live: true,
+                      viewers: 12400,
+                    ),
+                    GameItem(
+                      title: 'Apex Legends',
+                      image: NetworkImage('https://picsum.photos/id/1041/400/300'),
+                      viewers: 8200,
+                    ),
+                    GameItem(
+                      title: 'Fortnite',
+                      image: NetworkImage('https://picsum.photos/id/1043/400/300'),
+                      live: true,
+                      viewers: 15200,
+                    ),
+                    GameItem(
+                      title: 'PUBG',
+                      image: NetworkImage('https://picsum.photos/id/1045/400/300'),
+                      viewers: 6400,
+                    ),
+                  ],
+                  cardWidth: 140,
+                  cardHeight: 180,
+                ),
+                const SizedBox(height: 20),
+                LiveEventCard(
+                  data: const LiveEventData(
+                    title: 'Live game at 1h ago',
+                    subtitle: 'UFC 4',
+                    image: NetworkImage('https://picsum.photos/id/1050/200/200'),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  'Featured Streamers',
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                FeaturedStreamerRow(
+                  items: const [
+                    StreamerItem(
+                      name: 'Nova',
+                      tagLine: 'FPS • Rank Immortal',
+                      avatar: NetworkImage('https://picsum.photos/id/1005/200/200'),
+                      isLive: true,
+                      viewers: 4200,
+                    ),
+                    StreamerItem(
+                      name: 'Panda',
+                      tagLine: 'Just Chatting',
+                      avatar: NetworkImage('https://picsum.photos/id/1025/200/200'),
+                      viewers: 2300,
+                    ),
+                    StreamerItem(
+                      name: 'Shadow',
+                      tagLine: 'RPG • Cozy stream',
+                      avatar: NetworkImage('https://picsum.photos/id/1012/200/200'),
+                      isLive: true,
+                      viewers: 1800,
+                    ),
+                    StreamerItem(
+                      name: 'Kira',
+                      tagLine: 'Music • Covers',
+                      avatar: NetworkImage('https://picsum.photos/id/1013/200/200'),
+                    ),
+                  ],
+                  cardWidth: 220,
+                  cardHeight: 88,
+                ),
               ],
             ),
+          ),
           ),
         ),
       ),
