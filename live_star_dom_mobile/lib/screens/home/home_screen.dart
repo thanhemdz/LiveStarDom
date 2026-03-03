@@ -3,6 +3,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:live_star_dom_mobile/screens/notifications/notifications_screen.dart';
 import 'package:live_star_dom_mobile/components/search_bar.dart';
 import 'package:live_star_dom_mobile/components/live_avatar.dart';
+import 'package:live_star_dom_mobile/components/home_carousel.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -138,6 +139,25 @@ class HomeScreen extends StatelessWidget {
                   ],
                   itemSize: 64,
                   spacing: 18,
+                ),
+                const SizedBox(height: 24),
+                const Text(
+                  'Popular Games',
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                HomeCarousel(
+                  items: const [
+                    CarouselItem(image: NetworkImage('https://picsum.photos/id/1011/800/600')),
+                    CarouselItem(image: NetworkImage('https://picsum.photos/id/1015/800/600')),
+                    CarouselItem(image: NetworkImage('https://picsum.photos/id/1016/800/600')),
+                    CarouselItem(image: NetworkImage('https://picsum.photos/id/1020/800/600')),
+                  ],
+                  height: 240,
                 ),
               ],
             ),
